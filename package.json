@@ -1,0 +1,30 @@
+{
+  "name": "eleventy-plugin-pandoc",
+  "version": "1.0.2",
+  "description": "Swaps out Eleventy's rendering of Markdown for Pandoc",
+  "main": "index.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sjml/eleventy-plugin-pandoc.git"
+  },
+  "keywords": [
+    "eleventy",
+    "11ty",
+    "pandoc",
+    "eleventy-plugin"
+  ],
+  "author": {
+    "name": "Shane Liesegang",
+    "url": "https://shaneliesegang.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sjml/eleventy-plugin-pandoc/issues"
+  },
+  "homepage": "https://github.com/sjml/eleventy-plugin-pandoc#readme",
+  "dependencies": {
+    "deasync": "^0.1.30"
+  }
+}
