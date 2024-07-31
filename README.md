@@ -44,6 +44,9 @@ module.exports = function(eleventyConfig) {
    * If you're running as a server, this should be an
      object that includes all the keys that will be passed as options to
      the server. Example: `{"section-divs": true, "highlight-style": "monochrome"}`
+   * Finally, it can also be a function (non-async, sorry) that returns the
+     appropriate array or object. The function will receive the renderer 
+     environment as its argument. 
 * `pandocServerStartupWait`: how long in milliseconds to wait for the server
    to be ready before asking it to render. Experimentally `200`, the default,
    seems to work, but make this longer if you're getting errors.

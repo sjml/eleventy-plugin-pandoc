@@ -104,14 +104,17 @@ module.exports = (eleventyConfig, options = {}) => {
   eleventyConfig.amendLibrary("md", (lib) => {
     lib.render = (src, env) => {
       if (config.pandocInvoke == "direct") {
-        const pandocOpts = config.pandocOptions ?? [];
+        let pandocOpts = config.pandocOptions ?? [];
+        if (typeof pandocOpts === "function") {
+          pandocOpts = pandocOpts(env);
+        }
         if (!Array.isArray(pandocOpts)) {
           throw new Error(`Expected array for "pandocOptions", got ${typeof config.pandocOptions}.`)
         }
         const params = [
           "--from", config.inputFormat,
           "--to", config.outputFormat,
-        ].concat(config.pandocOptions);
+        ].concat(pandocOpts);
         const output = child_process.spawnSync(config.pathToPandoc,
           params, {input: src}
         );
@@ -122,7 +125,10 @@ module.exports = (eleventyConfig, options = {}) => {
         return output.stdout.toString("utf8");
       }
       else if (config.pandocInvoke == "server") {
-        const pandocOpts = config.pandocOptions ?? {};
+        let pandocOpts = config.pandocOptions ?? {};
+        if (typeof pandocOpts === "function") {
+          pandocOpts = pandocOpts(env);
+        }
         if (typeof pandocOpts != "object") {
           throw new Error(`Expected object for "pandocOptions", got ${typeof pandocOpts}.`)
         }
@@ -130,7 +136,7 @@ module.exports = (eleventyConfig, options = {}) => {
           text: src,
           from: config.inputFormat,
           to: config.outputFormat,
-        }, config.pandocOptions);
+        }, pandocOpts);
 
         try {
           const response = fetchSync(`http://localhost:${config.pandocServerPort}`, params);
