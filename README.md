@@ -6,6 +6,15 @@ larger project already using Pandoc for generating PDFs, and
 it's helpful to have one consistent Markdown renderer instead
 of trying to sync up functionality between the two of them.)
 
+Note that piping all your templates through Pandoc **will** 
+impact your build times; Pandoc's performance is overall very
+solid, but involving an external process is always going to slow
+things down. Switching to run in `server` mode can speed things
+up, but it also limits some of what you can do with Pandoc. In
+my usage, this performance impact isn't _too_ bad, but a build of
+the whole site goes from "basically instantaneous" to "definitely
+noticeable." 
+
 Initiate like most Eleventy plugins:
 ```js
 const md = require("./src/11ty_mods/customMarkdown");

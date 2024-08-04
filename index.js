@@ -53,6 +53,17 @@ function fetchSync(url, data) {
   return responseText;
 }
 
+function convertObjArgsToArr(obj) {
+  return Object.entries(obj).map(([key, value]) => {
+    if (typeof value === "boolean" && value == true) {
+      return [`--${key}`];
+    }
+    else {
+      return [`--${key}`, value];
+    }
+  }).flat();
+}
+
 module.exports = (eleventyConfig, options = {}) => {
   let pandocProc = null;
 
@@ -64,6 +75,7 @@ module.exports = (eleventyConfig, options = {}) => {
     pandocOptions: undefined,
     pandocServerStartupWait: 200,
     pandocServerPort: 3030,
+    compileOptionsPermalink: undefined,
   }
 
   Object.assign(config, options);
@@ -73,7 +85,10 @@ module.exports = (eleventyConfig, options = {}) => {
   // This is just so the log label indicates that there's some
   //   custom stuff happening.
   eleventyConfig.addExtension("md", {
-    name: "pandoc-md"
+    name: "pandoc-md",
+    compileOptions: {
+      permalink: config.compileOptionsPermalink
+    }
   });
 
   eleventyConfig.on("eleventy.before",
@@ -107,6 +122,9 @@ module.exports = (eleventyConfig, options = {}) => {
         let pandocOpts = config.pandocOptions ?? [];
         if (typeof pandocOpts === "function") {
           pandocOpts = pandocOpts(env);
+        }
+        if (typeof pandocOpts === "object") {
+          pandocOpts = convertObjArgsToArr(pandocOpts);
         }
         if (!Array.isArray(pandocOpts)) {
           throw new Error(`Expected array for "pandocOptions", got ${typeof config.pandocOptions}.`)
