@@ -53,6 +53,9 @@ module.exports = function(eleventyConfig) {
    * If you're running as a server, this should be an
      object that includes all the keys that will be passed as options to
      the server. Example: `{"section-divs": true, "highlight-style": "monochrome"}`
+   * (You can also pass an object to `direct` mode and it will attempt to translate
+     it to an array as best it can. Note though that some of the options passed
+     to the server have different names than their equivalents in direct running.)
    * Finally, it can also be a function (non-async, sorry) that returns the
      appropriate array or object. The function will receive the renderer 
      environment as its argument. 
